@@ -1,14 +1,18 @@
 import urllib2
+import datetime
 
 from utils import Handler
 from google.appengine.ext import ndb
 from google.appengine.api import mail
 from models import Manga
 from itertools import count
+from google.appengine.api import taskqueue
 
 class Update(Handler):
 
   def get(self):
+    tomorrow = datetime.datetime.today() + datetime.timedelta(days=1)
+    taskqueue.add(url='/update', eta=tomorrow, method='GET')
     email = 'jabrouwerutil@gmail.com'
     query = Manga.query()
     for manga in query.fetch():
