@@ -1,0 +1,15 @@
+<html>
+<body>
+<form method="post">
+  <p>Name: <input type="text" name="name" value={{ manga.name }} />
+  <p>Url Scheme: <input type="text" name="url_scheme" value={{ manga.url_scheme }} />
+  <p>Volume: <input type="text" name="volume" value={{ manga.volume|join(',') }} />
+  <p>Update Frequency: <input type="number" step="any" name="frequency" value={{ manga.frequency }} />
+  <p>Update Units: <select name="freq_units">
+    <option value="pages" selected>Pages</option>
+  </select>
+  <input type="hidden" name="key" value={{ manga.url_key }} />
+  <p><input type="submit" />
+</form>
+</body>
+</html>

@@ -1,0 +1,14 @@
+application: ballin-octo-wallhack
+version: 1-1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /.*
+  script: main.application
+  login: admin
+
+libraries:
+- name: jinja2
+  version: latest
