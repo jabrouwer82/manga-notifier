@@ -11,9 +11,9 @@ class Manga(Handler):
       key = ndb.Key(urlsafe=url_key)
       manga = key.get()
       manga.url_key = key.urlsafe()
-      manga = {'manga': manga}
     else:
-      manga = {'manga': {'key': ''}}
+      manga = MangaModel()
+    manga = {'manga': manga}
     self.render_template('manga.html', manga)
 
   def post(self):
@@ -28,6 +28,8 @@ class Manga(Handler):
     manga.url_scheme = self.request.get('url_scheme', '')
     manga.volume = [int(x) for x in self.request.get('volume', '').split(',')]
     manga.freq_units = self.request.get('freq_units', '')
+    manga.countdown = int(self.request.get('countdown', ''))
+    manga.update = bool(self.request.get('update', False))
     key = manga.put()
     self.response.write(key.urlsafe())
 

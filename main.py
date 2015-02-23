@@ -1,6 +1,9 @@
-import manga
 import webapp2
 
+from manga import Manga
+from update import Update
+
 application = webapp2.WSGIApplication([
-    ('/manga', manga.Manga)
+    ('/manga', Manga),
+    ('/update', Update)
 ], debug=True)

@@ -8,6 +8,8 @@
   <p>Update Units: <select name="freq_units">
     <option value="pages" selected>Pages</option>
   </select>
+  <p>Currently Reading: <input type="checkbox" name="update" checked />
+  <p>Countdown: <input type="number" name="countdown" value={{ manga.countdown }} />
   <input type="hidden" name="key" value={{ manga.url_key }} />
   <p><input type="submit" />
 </form>
