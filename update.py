@@ -19,20 +19,8 @@ class Update(Handler):
       if manga.countdown <= 0 and manga.update:
         name = manga.name
         url = manga.url_scheme.format(*manga.volume)
-        message='''
-Time for the next chapter of {name}! 
-
-You can access it here: {url}.
-
-If there is an isue with the url format, you can update it here:
-http://ballin-octo-wallhack.appspot.com/manga?manga={key}
-
-Or you can turn off updates for this manga by accessing the following link:
-http://ballin-octo-wallhack.appspot.com/unsubscribe?manga={key}'''
-        message = message.format(name=name, url=url, key=manga.key.urlsafe())
-        subject = 'Time for {name}'.format(name=name)
-        mail.send_mail_to_admins(email, subject, message)
-
+        
+        # Determine the next countdown
         page = urllib2.urlopen(url).read()
         page_num = 50
         for x in count(1):
@@ -42,9 +30,24 @@ http://ballin-octo-wallhack.appspot.com/unsubscribe?manga={key}'''
           if x >= 70:
             break
 
-        manga.countdown = int(manga.frequency * page_num)
+        countdown = int(manga.frequency * page_num)
+        manga.countdown = countdown
         manga.volume[-1] += 1
         manga.put()
+        
+        # Send the email
+        message='''
+Time for the next chapter of {name}! 
+
+You can access it here: {url}.
+
+You will receive the next update for {name} in {countdown} days.
+
+If there is an isue with this manga status, you can update it here:
+http://ballin-octo-wallhack.appspot.com/manga?manga={key}'''
+        message = message.format(name=name, url=url, key=manga.key.urlsafe(), countdown=countdown)
+        subject = 'Time for {name}'.format(name=name)
+        mail.send_mail_to_admins(email, subject, message)
       else:
         manga.countdown -= 1
         manga.put()
