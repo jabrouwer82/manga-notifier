@@ -15,6 +15,7 @@ class Update(Handler):
     taskqueue.add(url='/update', eta=tomorrow, method='GET')
     email = 'jabrouwerutil@gmail.com'
     query = Manga.query()
+    query.filter('update=', True)
     for manga in query.fetch():
       if manga.countdown <= 0 and manga.update:
         name = manga.name
