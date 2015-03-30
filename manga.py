@@ -30,6 +30,7 @@ class Manga(Handler):
     manga.freq_units = self.request.get('freq_units', '')
     manga.countdown = int(self.request.get('countdown', ''))
     manga.update = bool(self.request.get('update', False))
+    manga.manga_updates_url = bool(self.request.get('manga_updates_url', ''))
     key = manga.put()
     self.response.write(key.urlsafe())
 
