@@ -35,8 +35,8 @@ class Update(Handler):
         if manga.freq_units == 'pages':
           countdown = manga.frequency * page_num
         elif manga.freq_unit == 'days':
-          countdown = manga.countdown - manga.frequency
-        manga.countdown = countdown
+          countdown = manga.frequency
+        manga.countdown += countdown
         manga.volume[-1] += 1
         manga.put()
         
