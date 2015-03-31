@@ -10,4 +10,4 @@ class Manga(ndb.Model):
     freq_unit = ndb.StringProperty(default='')
     update = ndb.BooleanProperty(default=True)
     countdown = ndb.IntegerProperty(default=0)
-    manga_updates_url = ndb.StringProprty(default='')
+    manga_updates_url = ndb.StringProperty(default='')
