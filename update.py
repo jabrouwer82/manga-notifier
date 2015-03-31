@@ -17,7 +17,7 @@ class Update(Handler):
     query = Manga.query()
     query.filter('update=', True)
     for manga in query.fetch():
-      if manga.countdown <= 0 and manga.update:
+      if manga.countdown < 1 and manga.update:
         name = manga.name
         url = manga.url_scheme.format(*manga.volume)
         manga_updates_url = manga.manga_updates_url
@@ -32,7 +32,10 @@ class Update(Handler):
           if x >= 70:
             break
 
-        countdown = int(manga.frequency * page_num)
+        if manga.freq_units == 'pages':
+          countdown = manga.frequency * page_num
+        elif manga.freq_unit == 'days':
+          countdown = manga.countdown - manga.frequency
         manga.countdown = countdown
         manga.volume[-1] += 1
         manga.put()
