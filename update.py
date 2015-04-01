@@ -25,14 +25,36 @@ class Update(Handler):
         # Determine the next countdown
         page = urllib2.urlopen(url).read()
         page_num = 50
-        for x in count(1):
-          if not '>{}<'.format(x) in page:
-            page_num = x - 1
-            break
-          if x >= 70:
-            break
+        page_error = False
+        if page.contains('not available yet') and len(manga.volume) == 2:
+          # Either the volume is incorrect or we're all caught up.
+          new_volume = manga.volume
+          new_volume[0] += 1
+          url = manga.url_scheme.format(*new_volume)
+          page = urllib2.urlopen(url).read()
+          if not page.contains('not available yet'):
 
-        if manga.freq_units == 'pages':
+            manga.volume = new_volume
+        
+        if page.contains('not available yet'):
+          # Either we don't have a volume to adjust or the volume adjust
+          # doesn't fix the page error.
+          logging.error('Page error, manga not found at {url}'.format(url=url))
+          page = ''
+          page_error = True
+
+
+        if page:
+          for x in count(1):
+            if not '>{}<'.format(x) in page:
+              page_num = x - 1
+              break
+            if x >= 70:
+              break
+
+        if page_error:
+          countdown = 0
+        elif manga.freq_units == 'pages':
           countdown = manga.frequency * page_num
         elif manga.freq_unit == 'days':
           countdown = manga.frequency
