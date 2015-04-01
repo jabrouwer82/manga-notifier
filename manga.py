@@ -1,19 +1,19 @@
 import logging
+
+from mail import send_mail
 from utils import Handler
 from google.appengine.ext import ndb
 from models import Manga as MangaModel
-
 
 class Manga(Handler):
 
   def get(self):
     url_key = self.request.get('manga', '')
-    if url_key and not url_key == '/':
-      # When making a new manga, the url_key argument isn't filled out.
-      # However jinja changes that from an empty string to a '/' for some reason.
+    if url_key:
       key = ndb.Key(urlsafe=url_key)
       manga = key.get()
       manga.url_key = key.urlsafe()
+      # This is for the hidden input on the template.
     else:
       manga = MangaModel()
     manga = {'manga': manga}
@@ -21,9 +21,7 @@ class Manga(Handler):
 
   def post(self):
     url_key = self.request.get('key', '')
-    if url_key and not url_key == '/':
-      # When making a new manga, the url_key argument isn't filled out.
-      # However jinja changes that from an empty string to a '/' for some reason.
+    if url_key:
       key = ndb.Key(urlsafe=url_key)
       manga = key.get()
     else:
@@ -39,3 +37,11 @@ class Manga(Handler):
     key = manga.put()
     self.response.write(key.urlsafe())
 
+class MangaDelete(Handler):
+  def get(self):
+    url_key = self.request.get('manga', '')
+    key = ndb.Key(urlsafe=url_key)
+    manga = key.get()
+    send_mail('Deleted manga', manga)
+    self.response.write('Deleted manga: {manga} from the datastore'.format(manga=manga))
+    key.delete()

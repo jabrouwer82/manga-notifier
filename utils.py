@@ -3,7 +3,7 @@ import jinja2
 import os
 import webapp2
 
-from google.appengine.api import mail
+from mail import send_mail
 
 EMAIL = 'jabrouwerutil@gmail.com'
 
@@ -26,5 +26,5 @@ class Handler(webapp2.RequestHandler):
     self.response.write(json_txt)
 
   def handle_exception(self, exception, debug_mode):
-    mail.send_mail_to_admins(EMAIL, 'Exception in manga notifier', exception)
+    send_mail('Exception in manga notifier', exception)
     webapp2.RequestHandler.handle_exception(self, exception, debug_mode)

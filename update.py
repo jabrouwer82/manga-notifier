@@ -1,14 +1,12 @@
 import urllib2
 import datetime
 
-from google.appengine.api import mail
+from mail import send_mail
 from google.appengine.api import taskqueue
 from google.appengine.ext import ndb
 from itertools import count
 from models import Manga
 from utils import Handler
-
-EMAIL = 'jabrouwerutil@gmail.com'
 
 class Update(Handler):
   def update(self, manga):
@@ -71,7 +69,7 @@ If there is an isue with this manga status, you can update it here:
 http://ballin-octo-wallhack.appspot.com/manga?manga={key}'''
       message = message.format(name=name, url=url, key=manga.key.urlsafe(), countdown=countdown, manga_updates_url=manga_updates_url)
       subject = 'Time for {name}'.format(name=name)
-      mail.send_mail_to_admins(EMAIL, subject, message)
+      send_mail(subject, message)
     else:
       manga.countdown -= 1
       manga.put()
