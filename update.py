@@ -1,5 +1,6 @@
 import urllib2
 import datetime
+import logging
 
 from google.appengine.ext import ndb
 from itertools import count
