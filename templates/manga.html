@@ -9,8 +9,7 @@
     <option value="pages" {% if manga.freq_units == "pages" %}selected{% endif %}>Pages</option>
     <option value="days" {% if  manga.freq_units == "days" %}selected{% endif %}>Days</option>
   </select>
-  <p>Currently Reading: <input type="checkbox" name="update" {% if manga.update %}checked{% endif %} />
-  <p>Countdown: <input type="number" name="countdown" value="{{ manga.countdown }}" />
+  <p>Countdown: <input type="number" step="any" name="countdown" value="{{ manga.countdown }}" />
   <p>Manga Updates Url: <input type="text" name="manga_updates_url" value="{{ manga.manga_updates_url }}" />
   <input type="hidden" name="key" value="{{ manga.url_key }}" />
   <p><input type="submit" />
