@@ -1,12 +1,12 @@
 import urllib2
 import datetime
 
-from utils import Handler
-from google.appengine.ext import ndb
 from google.appengine.api import mail
-from models import Manga
-from itertools import count
 from google.appengine.api import taskqueue
+from google.appengine.ext import ndb
+from itertools import count
+from models import Manga
+from utils import Handler
 
 EMAIL = 'jabrouwerutil@gmail.com'
 
