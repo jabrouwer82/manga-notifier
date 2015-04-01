@@ -1,11 +1,11 @@
 import urllib2
 import datetime
 
-from mail import send_mail
-from google.appengine.api import taskqueue
 from google.appengine.ext import ndb
 from itertools import count
+from mail import send_mail
 from models import Manga
+from schedule import Schedule
 from utils import Handler
 
 class Update(Handler):
@@ -40,7 +40,7 @@ class Update(Handler):
 
       if page:
         for x in count(1):
-          if not '>{}<'.format(x) in page:
+          if not '>{num}<'.format(num=x) in page:
             page_num = x - 1
             break
           if x >= 70:
@@ -76,12 +76,12 @@ http://ballin-octo-wallhack.appspot.com/manga?manga={key}'''
 
 class UpdateAll(Update):
   def get(self):
-    tomorrow = datetime.datetime.today() + datetime.timedelta(days=1)
-    taskqueue.add(url='/update', eta=tomorrow, method='GET')
-    query = Manga.query(Manga.update == True)
-    # That was disgusting, why must I explicitly check for true
-    for manga in query:
-      self.update(manga)
+    if Schedule.can_update():
+      Schedule.schedule()
+      query = Manga.query(Manga.update == True)
+      # That was disgusting, why must I explicitly check for true
+      for manga in query:
+        self.update(manga)
 
 class UpdateOne(Update):
   def get(self):
