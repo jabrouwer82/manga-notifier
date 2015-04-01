@@ -26,5 +26,5 @@ class Handler(webapp2.RequestHandler):
     self.response.write(json_txt)
 
   def handle_exception(self, exception, debug_mode):
-    send_mail('Exception in manga notifier', exception)
+    send_mail('Exception in manga notifier', repr(exception))
     webapp2.RequestHandler.handle_exception(self, exception, debug_mode)
