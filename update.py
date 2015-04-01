@@ -52,6 +52,9 @@ class Update(Handler):
         countdown = manga.frequency * page_num
       elif manga.freq_units == 'days':
         countdown = manga.frequency
+      else:
+        logging.warning('Manga {manga} missing freq_units'.format(manga=name))
+        countdown = manga.frequency * page_num
       manga.countdown += countdown
       manga.put()
       
@@ -77,7 +80,7 @@ http://ballin-octo-wallhack.appspot.com/manga?manga={key}'''
 class UpdateAll(Update):
   def get(self):
     if Schedule.can_update():
-      Schedule.schedule()
+      Schedule.schedule_update()
       query = Manga.query(Manga.update == True)
       # That was disgusting, why must I explicitly check for true
       for manga in query:

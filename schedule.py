@@ -26,7 +26,7 @@ class Schedule(Handler):
   def schedule_update(schedule_date=None):
     # Internal access for adding to the task queue
     prev_update = Update.query().fetch(1)
-    pre_update_is_new = False
+    prev_update_is_new = False
     if prev_update:
       prev_update = prev_update[0]
     else:
