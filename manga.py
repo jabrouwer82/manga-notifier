@@ -21,7 +21,6 @@ class Manga(Handler):
 
   def post(self):
     url_key = self.request.get('key', '')
-    logging.info(self.request.get('freq_units', ''))
     if url_key and not url_key == '/':
       # When making a new manga, the url_key argument isn't filled out.
       # However jinja changes that from an empty string to a '/' for some reason.
