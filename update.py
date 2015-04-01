@@ -14,32 +14,33 @@ class Update(Handler):
     tomorrow = datetime.datetime.today() + datetime.timedelta(days=1)
     taskqueue.add(url='/update', eta=tomorrow, method='GET')
     email = 'jabrouwerutil@gmail.com'
-    query = Manga.query()
-    query.filter('update=', True)
-    for manga in query.fetch():
+    query = Manga.query(Manga.update == True)
+    # That was disgusting, why must I explicitly check for true
+    for manga in query:
       if manga.countdown < 1 and manga.update:
         name = manga.name
         url = manga.url_scheme.format(*manga.volume)
+        manga.volume[-1] += 1
+        next_url = manga.url_scheme.format(*manga.volume)
         manga_updates_url = manga.manga_updates_url
         
         # Determine the next countdown
-        page = urllib2.urlopen(url).read()
+        page = urllib2.urlopen(next_url).read()
         page_num = 50
         page_error = False
-        if page.contains('not available yet') and len(manga.volume) == 2:
+        if 'not available yet' in page and len(manga.volume) == 2:
           # Either the volume is incorrect or we're all caught up.
           new_volume = manga.volume
           new_volume[0] += 1
-          url = manga.url_scheme.format(*new_volume)
-          page = urllib2.urlopen(url).read()
-          if not page.contains('not available yet'):
-
+          next_url = manga.url_scheme.format(*new_volume)
+          page = urllib2.urlopen(next_url).read()
+          if not 'not available yet' in page:
             manga.volume = new_volume
         
-        if page.contains('not available yet'):
+        if 'not available yet' in page:
           # Either we don't have a volume to adjust or the volume adjust
           # doesn't fix the page error.
-          logging.error('Page error, manga not found at {url}'.format(url=url))
+          logging.error('Page error, manga not found at {url}'.format(url=next_url))
           page = ''
           page_error = True
 
@@ -59,7 +60,6 @@ class Update(Handler):
         elif manga.freq_unit == 'days':
           countdown = manga.frequency
         manga.countdown += countdown
-        manga.volume[-1] += 1
         manga.put()
         
         # Send the email
