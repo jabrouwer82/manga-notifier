@@ -11,9 +11,3 @@ class Manga(ndb.Model):
   update = ndb.BooleanProperty(default=True)
   countdown = ndb.FloatProperty(default=0.0)
   manga_updates_url = ndb.StringProperty(default='')
-
-class Update(ndb.Model):
-  '''Models dates for management of the task queue.'''
-  
-  prev_update = ndb.DateProperty()
-  next_update = ndb.DateProperty()
