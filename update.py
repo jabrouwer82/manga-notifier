@@ -71,7 +71,7 @@ For more information on this manga, see: {manga_updates_url}.
 
 If there is an isue with this manga status, you can update it here:
 http://ballin-octo-wallhack.appspot.com/manga?manga={key}'''
-      message = message.format(name=name, url=url, key=manga.key.urlsafe(), countdown=countdown, manga_updates_url=manga_updates_url)
+      message = message.format(name=name, url=url, key=manga.key.urlsafe(), countdown=manga.countdown, manga_updates_url=manga_updates_url)
       subject = 'Time for {name}'.format(name=name)
       send_mail(subject, message)
     else:
