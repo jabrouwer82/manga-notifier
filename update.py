@@ -81,7 +81,7 @@ http://ballin-octo-wallhack.appspot.com/manga?manga={key}'''
 class UpdateAll(Update):
   def get(self):
     Schedule.schedule_update()
-    query = Manga.query(Manga.update == True)
+    query = Manga.query()
     # That was disgusting, why must I explicitly check for true
     for manga in query:
       self.update(manga)
