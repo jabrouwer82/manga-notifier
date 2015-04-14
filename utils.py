@@ -1,24 +1,15 @@
 # This file contains helpful "tools" that other files can import and use
-import jinja2
-import os
 import webapp2
 
 from mail import send_mail
+from configuration import jinja_env
 
 EMAIL = 'jabrouwerutil@gmail.com'
 
-jinja_environment = jinja2.Environment(
-    autoescape=True,
-    loader=jinja2.FileSystemLoader(
-        os.path.join(os.path.dirname(__file__), 'templates')
-    )
-)
-
-
 class Handler(webapp2.RequestHandler):
 
-  def render_template(self, template_name, contents):
-    template = jinja_environment.get_template(template_name)
+  def render_template(self, template_name, **contents):
+    template = jinja_env.get_template(template_name)
     self.response.out.write(template.render(contents))
 
   def render_json(self, json_txt):

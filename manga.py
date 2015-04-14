@@ -16,8 +16,7 @@ class Manga(Handler):
       # This is for the hidden input on the template.
     else:
       manga = MangaModel()
-    manga = {'manga': manga}
-    self.render_template('manga.html', manga)
+    self.render_template('manga.html', manga=manga)
 
   def post(self):
     url_key = self.request.get('key', '')
@@ -45,3 +44,8 @@ class MangaDelete(Handler):
     send_mail('Deleted manga', str(manga))
     self.response.write('Deleted {manga} from the datastore'.format(manga=str(manga)))
     key.delete()
+
+class MangaList(Handler):
+  def get(self):
+    manga = MangaModel.query()
+    self.render_template('manga_list.html', mangas=manga)

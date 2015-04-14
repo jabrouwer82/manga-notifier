@@ -1,0 +1,15 @@
+<html>
+<body>
+  <h1>Manga List</h1>
+  {% if not mangas %}
+    <p>No manga in database.</p>
+  {% endif %}
+  {% for manga in mangas|sort(attribute='countdown') %}
+    <p>
+      <a href="/manga?manga={{ manga.key.urlsafe() }}" > {{ manga.name }}</a>
+      {{ manga.countdown }} days until update
+    </p>
+    <hr />
+  {% endfor %}
+</body>
+</html>
