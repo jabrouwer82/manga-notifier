@@ -8,9 +8,12 @@ EMAIL = 'jabrouwerutil@gmail.com'
 
 class Handler(webapp2.RequestHandler):
 
-  def render_template(self, template_name, **contents):
+  def render_template(self, template_name, write=True, **contents):
     template = jinja_env.get_template(template_name)
-    self.response.out.write(template.render(contents))
+    if write:
+      self.response.out.write(template.render(contents))
+    else:
+      return template.render(contents)
 
   def render_json(self, json_txt):
     self.response.headers['Content-Type'] = 'application/json'

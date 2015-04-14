@@ -41,8 +41,10 @@ class MangaDelete(Handler):
     url_key = self.request.get('manga', '')
     key = ndb.Key(urlsafe=url_key)
     manga = key.get()
-    send_mail('Deleted manga', str(manga))
-    self.response.write('Deleted {manga} from the datastore'.format(manga=str(manga)))
+    subject = 'Deleted {manga} from datastore'.format(manga=manga.name)
+    html_message = self.render_template('delete_email.html', write=False, manga=manga)
+    send_mail(subject, html=html_message)
+    self.response.write(html_message)
     key.delete()
 
 class MangaList(Handler):
