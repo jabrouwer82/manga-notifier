@@ -11,7 +11,7 @@ from utils import Handler
 
 class Update(Handler):
   def update(self, manga):
-    if manga.countdown < 1 and manga.update:
+    if manga.countdown < 1:
       name = manga.name
       url = manga.url_scheme.format(*manga.volume)
       manga.volume[-1] += 1
