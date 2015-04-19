@@ -39,7 +39,7 @@ class Manga(Handler):
 
 class MangaDelete(Handler):
   def get(self):
-    url_key = self.request.get('manga', '')
+    url_key = self.request.get('key', '')
     key = ndb.Key(urlsafe=url_key)
     manga = key.get()
     subject = 'Deleted {manga} from datastore'.format(manga=manga.name)
