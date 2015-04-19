@@ -35,6 +35,7 @@ class Manga(Handler):
     manga.manga_updates_url = self.request.get('manga_updates_url', '')
     key = manga.put()
     self.response.write(key.urlsafe())
+    self.redirect('/manga/list')
 
 class MangaDelete(Handler):
   def get(self):
@@ -46,6 +47,7 @@ class MangaDelete(Handler):
     send_mail(subject, html=html_message)
     self.response.write(html_message)
     key.delete()
+    self.redirect('/manga/list')
 
 class MangaList(Handler):
   def get(self):

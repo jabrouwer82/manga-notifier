@@ -6,6 +6,7 @@ from schedule import Schedule
 from update import UpdateAll, UpdateOne
 
 application = webapp2.WSGIApplication([
+    ('/', MangaList),
     ('/manga', Manga),
     ('/manga/delete', MangaDelete),
     ('/manga/list', MangaList),
