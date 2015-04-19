@@ -56,7 +56,8 @@ class Update(Handler):
       else:
         logging.warning('Manga {manga} missing freq_units'.format(manga=name))
         countdown = manga.frequency * page_num
-      manga.countdown = countdown + max(manga.countdown, 0) if manga.countdown else countdown
+      manga.countdown = countdown + manga.countdown if manga.countdown else countdown
+      manga.countdown = min(max(manga.countdown, 0.0), 18.0)
       manga.put()
       
       # Send the email
