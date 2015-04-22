@@ -83,9 +83,12 @@ class UpdateAll(Update):
   def get(self):
     Schedule.schedule_update()
     query = Manga.query()
-    # That was disgusting, why must I explicitly check for true
     for manga in query:
-      self.update(manga)
+      try:
+        self.update(manga)
+      except HTTPError:
+        logging.error('Error while updating {manga}'.format(manga=manga.name))
+        raise
 
 class UpdateOne(Update):
   def get(self):
