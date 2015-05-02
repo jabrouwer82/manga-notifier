@@ -3,7 +3,6 @@ import configuration
 
 from manga import Manga, MangaDelete, MangaList
 from schedule import Schedule
-from search import Search
 from update import UpdateAll, UpdateOne
 
 application = webapp2.WSGIApplication([
