@@ -10,7 +10,4 @@ class Converter(Handler):
       manga.put()
 
   def convert(self, manga):
-    manga.vol = -1
-    manga.freq_unit = ''
-    delattr(manga, 'vol')
-    delattr(manga, 'freq_unit')
+    pass

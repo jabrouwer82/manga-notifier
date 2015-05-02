@@ -10,12 +10,19 @@ from schedule import Schedule
 from utils import Handler
 
 class Update(Handler):
+
+  def url_format(self, url, volume, chapter):
+     if volume >= 0:
+       return url.format(volume, chapter)
+     else:
+       return url.format(chapter)
+
   def update(self, manga):
     if manga.countdown < 1:
       name = manga.name
-      url = manga.url_scheme.format(*manga.volume)
-      manga.volume[-1] += 1
-      next_url = manga.url_scheme.format(*manga.volume)
+      url = self.url_format(manga.url_scheme, manga.volume, manga.chapter)
+      manga.chapter += 1
+      next_url = self.url_format(manga.url_scheme, manga.volume, manga.chapter)
       manga_updates_url = manga.manga_updates_url
       
       # Determine the next countdown
@@ -25,8 +32,8 @@ class Update(Handler):
       if 'not available yet' in page and len(manga.volume) == 2:
         # Either the volume is incorrect or we're all caught up.
         new_volume = manga.volume
-        new_volume[0] += 1
-        next_url = manga.url_scheme.format(*new_volume)
+        new_volume += 1
+        next_url = self.url_format(manga.url_scheme, manga.volume, manga.chapter)
         page = urllib2.urlopen(next_url).read()
         if not 'not available yet' in page:
           manga.volume = new_volume
