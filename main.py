@@ -3,14 +3,16 @@ import configuration
 
 from manga import Manga, MangaDelete, MangaList
 from schedule import Schedule
+from search import Search
 from update import UpdateAll, UpdateOne
 
 application = webapp2.WSGIApplication([
-    ('/', MangaList),
-    ('/manga', Manga),
-    ('/manga/delete', MangaDelete),
-    ('/manga/list', MangaList),
-    ('/manga/update', UpdateOne),
-    ('/schedule', Schedule),
-    ('/update', UpdateAll)
+    webapp2.Route('/', MangaList),
+    webapp2.Route('/manga', Manga),
+    webapp2.Route('/manga/delete', MangaDelete),
+    webapp2.Route('/manga/list', MangaList),
+    webapp2.Route('/manga/update', UpdateOne),
+    webapp2.Route('/manga/<ident>', Manga),
+    webapp2.Route('/schedule', Schedule),
+    webapp2.Route('/update', UpdateAll)
 ], debug=True)
