@@ -1,6 +1,7 @@
 import webapp2
 import configuration
 
+from converter import Converter
 from manga import Manga, MangaDelete, MangaList
 from schedule import Schedule
 from update import UpdateAll, UpdateOne
@@ -13,5 +14,6 @@ application = webapp2.WSGIApplication([
     webapp2.Route('/manga/update', UpdateOne),
     webapp2.Route('/manga/<ident>', Manga),
     webapp2.Route('/schedule', Schedule),
-    webapp2.Route('/update', UpdateAll)
+    webapp2.Route('/update', UpdateAll),
+    webapp2.Route('/convert', Converter)
 ], debug=True)
