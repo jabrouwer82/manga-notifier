@@ -46,7 +46,7 @@ class Manga(Handler):
     manga.frequency = float(self.request.get('frequency', ''))
     manga.url_scheme = self.request.get('url_scheme', '')
     manga.volume = int(self.request.get('volume', '-1'))
-    manga.volume = int(self.request.get('chapter', '-1'))
+    manga.chapter = int(self.request.get('chapter', '-1'))
     manga.freq_units = self.request.get('freq_units', '')
     manga.countdown = float(self.request.get('countdown', ''))
     manga.update = bool(self.request.get('update', False))
