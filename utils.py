@@ -6,6 +6,12 @@ from configuration import jinja_env
 
 EMAIL = 'jabrouwerutil@gmail.com'
 
+def format_url(url_scheme, volume, chapter):
+   if volume >= 0:
+     return url_scheme.format(volume, chapter)
+   else:
+     return url_scheme.format(chapter)
+
 class Handler(webapp2.RequestHandler):
 
   def render_template(self, template_name, write=True, **contents):
