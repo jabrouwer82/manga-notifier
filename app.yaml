@@ -1,10 +1,13 @@
 application: ballin-octo-wallhack
-version: 1-15-0
+version: 2-0-0
 runtime: python27
 api_version: 1
 threadsafe: true
 
 handlers:
+- url: /static
+  static_dir: static
+
 - url: /.*
   script: main.application
   login: admin

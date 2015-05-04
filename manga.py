@@ -21,11 +21,9 @@ class Manga(Handler):
     
     self.render_template('manga.html', manga=manga)
 
-  def post(self):
-    url_key = self.request.get('key', '')
-    if url_key:
-      key = ndb.Key(urlsafe=url_key)
-      manga = key.get()
+  def post(self, ident=None):
+    if ident:
+      manga = MangaModel.fetch_by_key(ident)
     else:
       manga = MangaModel()
     manga.name = self.request.get('name', '')

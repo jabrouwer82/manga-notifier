@@ -1,17 +1,40 @@
-<html>
-<body>
-  <h1>Manga List</h1>
-  <a href="{{ 'add-manga' | uri }}">Add New Manga</a>
-  <hr />
-  {% if not mangas %}
-    <p>No manga in database.</p>
-  {% endif %}
-  {% for manga in mangas|sort(attribute='countdown') %}
-    <p {% if manga.countdown < 1.0 %} style="background-color: lightgray;" {% endif %}>
-      <a href="{{ 'edit-manga' | uri(ident=manga.key.urlsafe()) }}" > {{ manga.name }}</a>
-      {% if manga.volume >= 0 %}v{{ manga.volume }}{% endif %} c{{ manga.chapter }} will update in {{ manga.countdown }} days.
-    </p>
-    <hr />
-  {% endfor %}
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1>Manga List
+    <button id="add-manga" type="button" class="btn btn-default" style="margin-left:10%;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add New Manga</button>
+  </h1>
+  </div>
+  <div class="col-md-8 fluid-container">
+    {% if not mangas %}
+      <p>No manga in database.</p>
+    {% endif %}
+    <table class="table table-hover">
+      <tr>
+        <th>Name</th>
+        <th>Volume/Chapter</th>
+        <th>Countdown</th>
+      </tr>
+      {% for manga in mangas|sort(attribute='countdown') %}
+      <tr{% if manga.countdown < 1.0 %} class="info" {% endif %}>
+        <td>
+          <a href="{{ 'edit-manga' | uri(ident=manga.key.urlsafe()) }}" > {{ manga.name }}</a>
+        </td>
+        <td>{% if manga.volume >= 0 %}v{{ manga.volume }}{% endif %} c{{ manga.chapter }}
+        </td>
+        <td>{{ manga.countdown }} days
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#add-manga').click(function() {
+    window.location.href = {{ 'add-manga' | uri }}
+  });
+</script>
+
+{% endblock %}
