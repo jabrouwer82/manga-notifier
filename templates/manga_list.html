@@ -1,13 +1,15 @@
 <html>
 <body>
   <h1>Manga List</h1>
+  <a href="/manga">Add New Manga</a>
+  <hr />
   {% if not mangas %}
     <p>No manga in database.</p>
   {% endif %}
   {% for manga in mangas|sort(attribute='countdown') %}
     <p {% if manga.countdown < 1.0 %} style="background-color: lightgray;" {% endif %}>
       <a href="/manga?manga={{ manga.key.urlsafe() }}" > {{ manga.name }}</a>
-      {{ manga.countdown }} days until update
+      {% if manga.volume >= 0 %}v{{ manga.volume }}{% endif %} c{{ manga.chapter }} will update in {{ manga.countdown }} days.
     </p>
     <hr />
   {% endfor %}

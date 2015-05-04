@@ -1,8 +1,15 @@
 <html>
+<head>
+  <style>
+    input.text {
+      width: 30%;
+    }
+  </style>
+</head>
 <body>
 <form method="post">
-  <p>Name: <input type="text" name="name" value="{{ manga.name }}" />
-  <p>Url Scheme: <input type="text" name="url_scheme" value="{{ manga.url_scheme }}" />
+  <p>Name: <input class="text" type="text" name="name" value="{{ manga.name }}" />
+  <p>Url Scheme: <input class="text" type="text" name="url_scheme" value="{{ manga.url_scheme }}" />
   <p>Volume: <input type="number" name="volume" value="{{ manga.volume }}" />
   <p>Chapter: <input type="number" name="chapter" value="{{ manga.chapter }}" />
   <p>Update Frequency: <input type="number" step="any" name="frequency" value="{{ manga.frequency }}" />
@@ -11,9 +18,15 @@
     <option value="days" {% if  manga.freq_units == "days" %}selected{% endif %}>Days</option>
   </select>
   <p>Countdown: <input type="number" step="any" name="countdown" value="{{ manga.countdown }}" />
-  <p>Manga Updates Url: <input type="text" name="manga_updates_url" value="{{ manga.manga_updates_url }}" />
+  <p>Manga Updates Url: <input class="text" type="text" name="manga_updates_url" value="{{ manga.manga_updates_url }}" />
   <input type="hidden" name="key" value="{{ manga.url_key }}" />
-  <p><input type="submit" value="Update!"/>
+  <p>
+  {% if manga.url_key %}
+    <input type="submit" value="Update!"/>
+  {% else %}
+    <input type="submit" value="Add!"/>
+  {% endif %}
+  </p>
 </form>
 </body>
 </html>
