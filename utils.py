@@ -1,16 +1,19 @@
 # This file contains helpful "tools" that other files can import and use
 import webapp2
 
+from google.appengine.ext import ndb
+
 from mail import send_mail
+from models import Manga
 from configuration import jinja_env
 
 EMAIL = 'jabrouwerutil@gmail.com'
 
 def format_url(url_scheme, volume, chapter):
-   if volume >= 0:
-     return url_scheme.format(volume, chapter)
-   else:
-     return url_scheme.format(chapter)
+  if volume >= 0:
+    return url_scheme.format(volume, chapter)
+  else:
+    return url_scheme.format(chapter)
 
 class Handler(webapp2.RequestHandler):
 

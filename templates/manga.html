@@ -19,9 +19,9 @@
   </select>
   <p>Countdown: <input type="number" step="any" name="countdown" value="{{ manga.countdown }}" />
   <p>Manga Updates Url: <input class="text" type="text" name="manga_updates_url" value="{{ manga.manga_updates_url }}" />
-  <input type="hidden" name="key" value="{{ manga.url_key }}" />
   <p>
-  {% if manga.url_key %}
+  {% if manga.key %}
+    <input type="hidden" name="key" value="{{ manga.key.urlsafe() }}" />
     <input type="submit" value="Update!"/>
   {% else %}
     <input type="submit" value="Add!"/>

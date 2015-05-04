@@ -7,27 +7,13 @@ from models import Manga as MangaModel
 
 class Manga(Handler):
 
-  def fetch_by_name(self, name):
-    manga = MangaModel.query(MangaModel.name == name).get()
-    return manga
-
-  def fetch_by_key(self, url_key):
-    key = ndb.Key(urlsafe=url_key)
-    manga = key.get()
-    manga.url_key = key.urlsafe()
-    # This is for the hidden input on the template.
-    return manga
-
   def get(self, ident=None):
-    if not ident:
-      ident = self.request.get('manga', '')
-    
     if ident:
       # Try id as name
-      manga = self.fetch_by_name(ident)
+      manga = MangaModel.fetch_by_name(ident)
       if not manga:
         # Try id as url_key
-        manga = self.fetch_by_key(ident)
+        manga = MangaModel.fetch_by_key(ident)
     
     # If we were not given a manga or could not find the one we were given.
     if not ident or not manga:
