@@ -111,3 +111,8 @@ class UpdateOne(Update):
     manga = key.get()
     self.update(manga)
 
+class Cancel(Handler):
+  def get(self):
+    # Purge entire queue
+    q = taskqueue.Queue('updatequeue')
+    q.purge()

@@ -21,7 +21,7 @@
         <td>
           <a href="{{ 'edit-manga' | uri(ident=manga.key.urlsafe()) }}" > {{ manga.name }}</a>
         </td>
-        <td>{% if manga.volume >= 0 %}v{{ manga.volume }}{% endif %} c{{ manga.chapter }}
+        <td style="text-align:right;">{% if manga.volume >= 0 %}v{{ manga.volume }}{% endif %} c{{ manga.chapter }}
         </td>
         <td>{{ manga.countdown }} days
         </td>
