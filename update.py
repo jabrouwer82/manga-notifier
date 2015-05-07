@@ -124,4 +124,12 @@ class Cancel(Handler):
     q = taskqueue.Queue('default')
     q.purge()
     self.redirect(webapp2.uri_for('home'))
- 
+
+class Undo(Handler):
+  def get(self, ident=None):
+    manga = Manga.fetch_by_name_or_key(ident)
+    if manga and manga.chapter > 1:
+      manga.chapter -= 1
+      manga.put()
+    self.redirect(webapp2.uri_for('home'))
+

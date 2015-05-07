@@ -84,6 +84,12 @@
           </span>
           Update This Manga
         </a>
+        <a href="{{ 'update-undo' | uri(ident=manga.key.urlsafe()) }}" class="list-group-item">
+          <span class="badge">
+            <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+          </span>
+          Undo Most Recent Update
+        </a>
       </ul>
     </div>
     {% endif %}

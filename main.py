@@ -58,6 +58,10 @@ application = webapp2.WSGIApplication([
         routes.RedirectRoute('/<ident>',
                              handler='update.UpdateOne',
                              name='update-manga',
+                             strict_slash=True),
+        routes.RedirectRoute('/undo/<ident>',
+                             handler='update.Undo',
+                             name='update-undo',
                              strict_slash=True)
     ]),
     routes.RedirectRoute('/convert',
