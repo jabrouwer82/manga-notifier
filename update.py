@@ -117,3 +117,5 @@ class Cancel(Handler):
     # Purge entire queue
     q = taskqueue.Queue('updatequeue')
     q.purge()
+    q = taskqueue.Queue('default')
+    q.purge()
