@@ -2,6 +2,7 @@ import urllib2
 import datetime
 import logging
 
+from google.appengine.api import taskqueue
 from google.appengine.ext import ndb
 from itertools import count
 
