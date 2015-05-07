@@ -111,7 +111,7 @@ class UpdateAll(Update):
     self.redirect(webapp2.uri_for('home'))
 
 class UpdateOne(Update):
-  def get(self, ident=None):
+  def get(self, ident):
     manga = Manga.fetch_by_name_or_key(ident)
     self.update(manga)
     self.redirect(webapp2.uri_for('home'))
@@ -126,7 +126,7 @@ class Cancel(Handler):
     self.redirect(webapp2.uri_for('home'))
 
 class Undo(Handler):
-  def get(self, ident=None):
+  def get(self, ident):
     manga = Manga.fetch_by_name_or_key(ident)
     if manga and manga.chapter > 1:
       manga.chapter -= 1
