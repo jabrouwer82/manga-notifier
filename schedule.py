@@ -48,9 +48,6 @@ class Schedule(Handler):
     schedule_date = self.request.get('date')
     schedule_time = self.request.get('time')
     force = self.request.get('force')
-    logging.info(schedule_date)
-    logging.info(schedule_time)
-    logging.info(force)
     if schedule_date:
       schedule_date = datetime.strptime(schedule_date, '%m-%d-%Y').date()
     Schedule.schedule_update(schedule_date, schedule_time, force)
