@@ -90,10 +90,24 @@
           </span>
           Undo Most Recent Update
         </a>
+        <a id="delete-manga" href="{{ 'manga-delete' | uri(ident=manga.key.urlsafe()) }}" class="list-group-item">
+          <span class="badge">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+          </span>
+          Delete This Manga
+        </a>
       </ul>
     </div>
     {% endif %}
   </div>
 </div>
+
+<script type="text/javascript">
+  $('#delete-manga').click(function() {
+    if(!confirm("Remove this manga from the datastore?")) {
+      event.preventDefault();
+    }
+  });
+</script>
 
 {% endblock %}

@@ -37,15 +37,13 @@ class Manga(Handler):
     self.redirect(webapp2.uri_for('home'))
 
 class MangaDelete(Handler):
-  def get(self):
-    url_key = self.request.get('key', '')
-    key = ndb.Key(urlsafe=url_key)
-    manga = key.get()
+  def get(self, ident):
+    manga = MangaModel.fetch_by_key(ident)
     subject = 'Deleted {manga} from datastore'.format(manga=manga.name)
     html_message = self.render_template('delete_email.html', write=False, manga=manga)
     send_mail(subject, html=html_message)
     self.response.write(html_message)
-    key.delete()
+    manga.key.delete()
     self.redirect(webapp2.uri_for('home'))
 
 class MangaList(Handler):
