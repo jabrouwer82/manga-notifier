@@ -39,12 +39,12 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li><a href="{{ 'list-manga' | uri }}">Manga List<span class="sr-only">(current)</span></a></li>
-          <li><a href="{{ 'add-manga' | uri }}">Add Manga</a></li>
+          <li><a href="{{ 'manga-list' | uri }}">Manga List<span class="sr-only">(current)</span></a></li>
+          <li><a href="{{ 'manga-add' | uri }}">Add Manga</a></li>
         </ul>
         <div style="margin-top: 8px;">
           <div class="desktop-search">
-            <form id="search-form" class="form-inline nav navbar-nav" action="{{ 'edit-manga' | uri(ident='null') }}">
+            <form id="search-form" class="form-inline nav navbar-nav" action="{{ 'manga-edit' | uri(ident='null') }}">
               <div class="form-group">
                 <input id="search-name" type="text" class="form-control" name="name" placeholder="Manga name">
               </div>
@@ -56,24 +56,24 @@
     </div><!-- /.container-fluid -->
   </nav>
 
-    {% block content %}{% endblock %}
+{% block content %}{% endblock %}
 
-  <script type="text/javascript">
-    function search() {
-      var name = $('#search-name').val();
-      var loc = $('#search-form').attr('action');
-      loc = loc.substring(0, loc.length - 4);
-      window.location.href = loc + name;
-    };
-    $('#search-button').click(search);
-    $('#search-name').bind("enterKey", search);
-    $('#search-name').keyup(function(e) {
-      if(e.keyCode == 13) {
-         $(this).trigger("enterKey");
-      }
-    });
-  </script>
-  </body>
+<script type="text/javascript">
+  function search() {
+    event.preventDefault();
+    var name = $('#search-name').val();
+    var loc = $('#search-form').attr('action');
+    loc = loc.substring(0, loc.length - 4);
+    window.location.href = loc + name;
+  };
+  $('#search-button').click(search);
+  $('#search-name').keydown(function(e) {
+    if(e.which == 13) {
+       search();
+    }
+  });
+</script>
+</body>
 
-  </html>
+</html>
 

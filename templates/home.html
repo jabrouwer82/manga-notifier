@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block content %}
+<title>Dashboard</title>
+<div class="container">
+  <div class="page-header">
+    <h1>Upcoming Manga Updates
+  </h1>
+  </div>
+  <div class="col-md-8 fluid-container">
+    {% if not mangas %}
+    <p>No upcoming manga updates.</p>
+    {% else %}
+    <table class="table table-hover">
+      <tr>
+        <th>Name</th>
+        <th>Countdown</th>
+      </tr>
+      {% for manga in mangas|sort(attribute='countdown') %}
+      <tr{% if manga.countdown < 0.0 %} class="danger" {% endif %}>
+        <td>
+          <a href="{{ 'manga-edit' | uri(ident=manga.key.urlsafe()) }}" >
+            {{ manga.name }}
+          </a>
+          <span class="badge">
+            {% if manga.volume >= 0 %}v{{ manga.volume }}{% endif %} c{{ manga.chapter }}
+          </span>
+        </td>
+        <td>{{ manga.countdown }} days
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+  </div>
+  <div class="col-md-4 fluid-containter">
+    <ul class="list-group">
+      <li class="list-group-item active">
+        <h4>
+          Actions
+        </h4>
+      </li>
+      <a href="{{ 'manga-add' | uri}}" class="list-group-item">
+        <span class="badge">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </span>
+        Add New Manga
+      </a>
+      <div id="accordian" role="tablist" aria-multiselectable="true">
+        <div>
+          <div role="tab" id="headingOne">
+            <a class="list-group-item" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+              <span class="badge">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+              </span>
+              Schedule Update
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="list-group-item">
+              <form action="{{ 'schedule' | uri }}">
+                <div class="form-group">
+                  <label for="schedule-date">Date</label>
+                  <input name="date" type="text" class="form-control" id="schedule-date" placeholder="DD-MM-YYYY">
+                </div>
+                <div class="form-group">
+                  <label for="schedule-time">Time</label>
+                  <input name="time" type="text" class="form-control" id="schedule-time" placeholder="HH:MM">
+                </div>
+                <div class="form-group">
+                  <div class="checkbox">
+                    <label>
+                      <input name="force" type="checkbox"> Force
+                    </label>
+                  </div>
+                </div>
+                <button type="submit"class="btn btn-default">Schedule</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div role="tab" id="headingTwo">
+            <a class="list-group-item" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              <span class="badge">
+                <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
+              </span>
+              Update One Manga
+            </a>
+          </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="list-group-item">
+              <form id="update-form" action="{{ 'update-manga' | uri(ident='null') }}">
+                <div class="form-group">
+                  <label for="manga-name">Manga Name or ID</label>
+                  <input name="name" type="text" class="form-control" id="manga-name" placeholder="Name or ID">
+                </div>
+                <button id="update-button" type="button" class="btn btn-default">Update Manga</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="{{ 'update-all' | uri }}" class="list-group-item">
+        <span class="badge">
+          <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
+        </span>
+        Update All Manga
+      </a>
+      <a href="{{ 'update-cancel' | uri }}" class="list-group-item">
+        <span class="badge">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </span>
+        Cancel All Updates
+      </a>
+    </ul>
+  </div>
+</div>
+<style>
+  span.glyphicon {
+    font-size: 1.3em;
+  }
+</style>
+<script type="text/javascript">
+  function update_manga() {
+    event.preventDefault();
+    var name = $('#manga-name').val();
+    var loc = $('#update-form').attr('action');
+    loc = loc.substring(0, loc.length - 4);
+    $.get(loc + name, function(data) {
+      location.reload();
+    });
+  };
+  $('#update-button').click(update_manga);
+  $('#manga-name').keydown(function(e) {
+    if(e.which == 13) {
+       update_manga();
+    }
+  });
+</script>
+{% endblock %}

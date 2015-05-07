@@ -1,6 +1,7 @@
-import urllib2
 import datetime
 import logging
+import urllib2
+import webapp2
 
 from google.appengine.api import taskqueue
 from google.appengine.ext import ndb
@@ -47,8 +48,8 @@ class Update(Handler):
         content = Content(manga.url_scheme, volume, chapter)
       
       if content.is_not_found():
-        # Something's goofed 
-        manga.countdown = 0
+        # Something's goofed, try again tomorrow. 
+        manga.countdown = float('-inf')
         logging.error('Unable to update volume/chapter for {name}'.format(name=name))
       else:
         manga.volume = volume
@@ -72,7 +73,10 @@ class Update(Handler):
           manga.countdown += manga.frequency
 
       # Assert 0 <= countdown <= 18
-      manga.countdown = min(max(manga.countdown, 0.0), 18.0)
+      if manga.countdown != float('-inf'):
+        manga.countdown = min(max(manga.countdown, 0.0), 18.0)
+      else:
+        manga.countdown = -1.0
       manga.put()
       
       # Send the email
@@ -104,13 +108,13 @@ class UpdateAll(Update):
       except urllib2.HTTPError:
         logging.error('Error while updating {manga}'.format(manga=manga.name))
         raise
+    self.redirect(webapp2.uri_for('home'))
 
 class UpdateOne(Update):
-  def get(self):
-    url_key = self.request.get('manga', '')
-    key = ndb.Key(urlsafe=url_key)
-    manga = key.get()
+  def get(self, ident=None):
+    manga = Manga.fetch_by_name_or_key(ident)
     self.update(manga)
+    self.redirect(webapp2.uri_for('home'))
 
 class Cancel(Handler):
   def get(self):
@@ -119,3 +123,5 @@ class Cancel(Handler):
     q.purge()
     q = taskqueue.Queue('default')
     q.purge()
+    self.redirect(webapp2.uri_for('home'))
+ 

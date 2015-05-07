@@ -5,35 +5,52 @@ from webapp2_extras import routes
 
 application = webapp2.WSGIApplication([
     webapp2.Route('/',
-                  handler='manga.MangaList',
+                  handler='home.Home',
                   name='home'),
+    # Manga endpoints
     routes.RedirectRoute('/manga',
                          handler='manga.Manga',
-                         name='add-manga',
+                         name='manga-add',
                          strict_slash=True),
     routes.PathPrefixRoute('/manga', [
         routes.RedirectRoute('/delete',
                              handler='manga.MangaDelete',
-                             name='delete-manga',
+                             name='manga-delete',
                              strict_slash=True),
         routes.RedirectRoute('/list',
                              handler='manga.MangaList',
-                             name='list-manga',
+                             name='manga-list',
                              strict_slash=True),
         routes.RedirectRoute('/<ident>',
                              handler='manga.Manga',
-                             name='edit-manga',
+                             name='manga-edit',
+                             strict_slash=True),
+        routes.RedirectRoute('/update/<ident>',
+                             handler='update.UpdateOne',
+                             name='manga-update',
                              strict_slash=True)
     ]),
+    # Schedule endpoints
     routes.RedirectRoute('/schedule',
                          handler='schedule.Schedule',
                          name='schedule',
                          strict_slash=True),
+    routes.PathPrefixRoute('/shcedule', [
+        routes.RedirectRoute('/cancel',
+                             handler='schedule.Schedule',
+                             name='schedule-cancel',
+                             strict_slash=True)
+    ]),
+    # Update endpoints
     routes.RedirectRoute('/update',
                          handler='update.UpdateAll',
                          name='update-all',
                          strict_slash=True),
     routes.PathPrefixRoute('/update', [
+        routes.RedirectRoute('/schedule',
+                             handler='schedule.Schedule',
+                             name='update-schedule',
+                             strict_slash=True),
         routes.RedirectRoute('/cancel',
                              handler='update.Cancel',
                              name='update-cancel',
@@ -45,6 +62,6 @@ application = webapp2.WSGIApplication([
     ]),
     routes.RedirectRoute('/convert',
                          handler='converter.Converter',
-                         name='converter',
+                         name='convert',
                          strict_slash=True)
 ], debug=True)

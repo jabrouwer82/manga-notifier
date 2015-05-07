@@ -8,69 +8,85 @@
     {% else %}
     <h1>Add Manga</h1>
     {% endif %}
+  </div>
+  <div class="col-md-8 fluid-container">
+    <form method="post" class="form-horizontal">
+      <div class="form-group">
+        <label for="input-name" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+          <input class="form-control" type="text" name="name" id="input-name" value="{{ manga.name }}" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input-url-scheme" class="col-sm-2 control-label">Url Scheme</label>
+        <div class="col-sm-10">
+          <input class="form-control" type="text" name="url_scheme" id="input-url-scheme" value="{{ manga.url_scheme }}" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input-volume" class="col-sm-2 control-label">Volume</label>
+        <div class="col-sm-10">
+          <input class="form-control" type="number" name="volume" id="input-volume" value="{{ manga.volume }}" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input-chapter" class="col-sm-2 control-label">Chapter</label>
+        <div class="col-sm-10">
+          <input class="form-control" type="number" name="chapter" id="input-chapter" value="{{ manga.chapter }}" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input-frequency" class="col-sm-2 control-label">Frequency</label>
+        <div class="col-sm-10">
+          <input class="form-control" type="number" id="input-frequency" step="any" name="frequency" value="{{ manga.frequency }}" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input-units" class="col-sm-2 control-label">Units</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="freq_units" id="input-units">
+            <option value="pages" {% if manga.freq_units == "pages" %}selected{% endif %}>Pages</option>
+            <option value="days" {% if  manga.freq_units == "days" %}selected{% endif %}>Days</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input-countdown" class="col-sm-2 control-label">Countdown</label>
+        <div class="col-sm-10">
+          <input class="form-control" type="number" step="any" name="countdown" id="input-countdown" value="{{ manga.countdown }}" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input-manga-update-url" class="col-sm-2 control-label">Manga Updates Url</label>
+        <div class="col-sm-10">
+          <input class="form-control" type="text" name="manga_updates_url" id="input-manga-update-url" value="{{ manga.manga_updates_url }}" />
+        </div>
+      </div>
+      {% if manga.key %}
+        <input type="hidden" name="key" value="{{ manga.key.urlsafe() }}" />
+        <input type="submit" class="btn btn-default" value="Update!"/>
+      {% else %}
+        <input type="submit" class="btn btn-default" value="Add!"/>
+      {% endif %}
+      </div>
+    </form>
+    {% if manga.key %}
+    <div class="col-md-4 fluid-container">
+      <ul class=list-group">
+        <li class="list-group-item active">
+          <h4>
+            Actions
+          </h4>
+        </li>
+        <a href="{{ 'manga-update' | uri(ident=manga.key.urlsafe()) }}" class="list-group-item">
+          <span class="badge">
+            <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
+          </span>
+          Update This Manga
+        </a>
+      </ul>
     </div>
-    <div class="col-md-8 container-fluid">
-      <form method="post" class="form-horizontal">
-        <div class="form-group">
-          <label for="input-name" class="col-sm-2 control-label">Name</label>
-          <div class="col-sm-10">
-            <input class="form-control" type="text" name="name" id="input-name" value="{{ manga.name }}" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="input-url-scheme" class="col-sm-2 control-label">Url Scheme</label>
-          <div class="col-sm-10">
-            <input class="form-control" type="text" name="url_scheme" id="input-url-scheme" value="{{ manga.url_scheme }}" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="input-volume" class="col-sm-2 control-label">Volume</label>
-          <div class="col-sm-10">
-            <input class="form-control" type="number" name="volume" id="input-volume" value="{{ manga.volume }}" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="input-chapter" class="col-sm-2 control-label">Chapter</label>
-          <div class="col-sm-10">
-            <input class="form-control" type="number" name="chapter" id="input-chapter" value="{{ manga.chapter }}" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="input-frequency" class="col-sm-2 control-label">Frequency</label>
-          <div class="col-sm-10">
-            <input class="form-control" type="number" id="input-frequency" step="any" name="frequency" value="{{ manga.frequency }}" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="input-units" class="col-sm-2 control-label">Units</label>
-          <div class="col-sm-10">
-            <select class="form-control" name="freq_units" id="input-units">
-              <option value="pages" {% if manga.freq_units == "pages" %}selected{% endif %}>Pages</option>
-              <option value="days" {% if  manga.freq_units == "days" %}selected{% endif %}>Days</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="input-countdown" class="col-sm-2 control-label">Countdown</label>
-          <div class="col-sm-10">
-            <input class="form-control" type="number" step="any" name="countdown" id="input-countdown" value="{{ manga.countdown }}" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="input-manga-update-url" class="col-sm-2 control-label">Manga Updates Url</label>
-          <div class="col-sm-10">
-            <input class="form-control" type="text" name="manga_updates_url" id="input-manga-update-url" value="{{ manga.manga_updates_url }}" />
-          </div>
-        </div>
-        {% if manga.key %}
-          <input type="hidden" name="key" value="{{ manga.key.urlsafe() }}" />
-          <input type="submit" class="btn btn-default" value="Update!"/>
-        {% else %}
-          <input type="submit" class="btn btn-default" value="Add!"/>
-        {% endif %}
-        </div>
-      </form>
-    </div>
+    {% endif %}
   </div>
 </div>
 

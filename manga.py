@@ -1,4 +1,5 @@
 import logging
+import webapp2
 
 from mail import send_mail
 from utils import Handler
@@ -9,11 +10,7 @@ class Manga(Handler):
 
   def get(self, ident=None):
     if ident:
-      # Try id as name
-      manga = MangaModel.fetch_by_name(ident)
-      if not manga:
-        # Try id as url_key
-        manga = MangaModel.fetch_by_key(ident)
+      manga = MangaModel.fetch_by_name_or_key(ident)
     
     # If we were not given a manga or could not find the one we were given.
     if not ident or not manga:
@@ -37,7 +34,7 @@ class Manga(Handler):
     manga.manga_updates_url = self.request.get('manga_updates_url', '')
     key = manga.put()
     self.response.write(key.urlsafe())
-    self.redirect('/manga/list')
+    self.redirect(webapp2.uri_for('home'))
 
 class MangaDelete(Handler):
   def get(self):
@@ -49,9 +46,9 @@ class MangaDelete(Handler):
     send_mail(subject, html=html_message)
     self.response.write(html_message)
     key.delete()
-    self.redirect('/manga/list')
+    self.redirect(webapp2.uri_for('home'))
 
 class MangaList(Handler):
   def get(self):
-    manga = MangaModel.query()
+    manga = MangaModel.query().fetch()
     self.render_template('manga_list.html', mangas=manga)

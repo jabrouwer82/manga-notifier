@@ -1,4 +1,5 @@
 import logging
+import webapp2
 
 from datetime import date, datetime, time, timedelta
 from google.appengine.api import taskqueue
@@ -51,3 +52,5 @@ class Schedule(Handler):
     if schedule_date:
       schedule_date = datetime.strptime(schedule_date, '%m-%d-%Y').date()
     Schedule.schedule_update(schedule_date, schedule_time, force)
+    self.redirect(webapp2.uri_for('home'))
+

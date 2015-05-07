@@ -22,3 +22,17 @@ class Manga(ndb.Model):
     key = ndb.Key(urlsafe=url_key)
     manga = key.get()
     return manga
+
+  @classmethod
+  def fetch_by_name_or_key(cls, ident):
+    manga = cls.fetch_by_name(ident)
+    if not manga:
+      manga = cls.fetch_by_key(ident)
+    return manga
+
+  @classmethod
+  def fetch_by_key_or_name(cls, ident):
+    manga = cls.fetch_by_key(ident)
+    if not manga:
+      manga = cls.fetch_by_name(ident)
+    return manga
