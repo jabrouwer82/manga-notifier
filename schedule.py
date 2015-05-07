@@ -8,16 +8,24 @@ from mail import send_mail
 
 class Schedule(Handler):
   @staticmethod
-  def schedule_update(schedule_date=None, force=False):
+  def schedule_update(schedule_date=None, schedule_time=None, force=False):
     # Internal access for adding to the task queue
     if not schedule_date:
       schedule_date = date.today() + timedelta(days=1)
-    four_thirty_am = time(9, 30)
-    # 4:30 am CST is 9:30am UTC.
+    if not schedule_time:
+      schedule_time = '4:30'
+    hour, minute = map(int, schedule_time.split(':'))
+    # Converts from EST to UTC by default.
+    hour += 5
+    # Account for drifting into the next UTC day
+    if hour > 24:
+      hour -= 24
+      schedule_date += timedelta(days=1)
+    schedule_time = time(hour, minute)
     # This leaves plenty of error room for not screwing up dates.
-    schedule_time = datetime.combine(schedule_date, four_thirty_am)
+    schedule_datetime = datetime.combine(schedule_date, schedule_time)
     args = {'url': '/update',
-            'eta': schedule_time,
+            'eta': schedule_datetime,
             'method': 'GET'
            }
     if force:
@@ -29,7 +37,7 @@ class Schedule(Handler):
       args['queue_name'] = 'updatequeue'
     try:
       taskqueue.add(**args)
-    except TombstonedTaskError, e:
+    except TombstonedTaskError:
       subject = 'Duplicate task created at manga-notifier'
       message = 'A task was created for {date} but there already exists a task for {date}.'.format(date=schedule_date)
       send_mail(subject, message)
@@ -38,7 +46,11 @@ class Schedule(Handler):
   def get(self):
     # Endpoit handler for adding to the task queue
     schedule_date = self.request.get('date')
-    force = bool(self.request.get('force', ''))
+    schedule_time = self.request.get('time')
+    force = self.request.get('force')
+    logging.info(schedule_date)
+    logging.info(schedule_time)
+    logging.info(force)
     if schedule_date:
       schedule_date = datetime.strptime(schedule_date, '%m-%d-%Y').date()
-    Schedule.schedule_update(schedule_date, force)
+    Schedule.schedule_update(schedule_date, schedule_time, force)
