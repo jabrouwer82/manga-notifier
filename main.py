@@ -34,11 +34,11 @@ application = webapp2.WSGIApplication([
                          name='update-all',
                          strict_slash=True),
     routes.PathPrefixRoute('/update', [
-        routes.RedirectRoute('/update/cancel',
+        routes.RedirectRoute('/cancel',
                              handler='update.Cancel',
                              name='update-cancel',
                              strict_slash=True),
-        routes.RedirectRoute('/update/<ident>',
+        routes.RedirectRoute('/<ident>',
                              handler='update.UpdateOne',
                              name='update-manga',
                              strict_slash=True)
