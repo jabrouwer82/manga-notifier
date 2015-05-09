@@ -3,8 +3,14 @@
 <title>Dashboard</title>
 <div class="container">
   <div class="page-header">
-    <h1>Upcoming Manga Updates
-  </h1>
+    <h1>
+      Upcoming Manga Updates
+      {% if mangas|length %}
+      <span class="label label-default">
+        {{ mangas | length }}
+      </span>
+      {%endif %}
+    </h1>
   </div>
   <div class="col-md-8 fluid-container">
     {% if not mangas %}

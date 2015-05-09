@@ -3,6 +3,11 @@
 <div class="container">
   <div class="page-header">
     <h1>Manga List
+      {% if mangas|length %}
+      <span class="label label-default">
+        {{ mangas | length }}
+      </span>
+      {%endif %}
     </h1>
   </div>
   <div class="col-md-8 fluid-container">
