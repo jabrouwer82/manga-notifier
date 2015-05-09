@@ -2,6 +2,7 @@ import datetime
 import logging
 import urllib2
 import webapp2
+import threading
 
 from google.appengine.api import taskqueue
 from google.appengine.ext import ndb
@@ -100,7 +101,7 @@ http://ballin-octo-wallhack.appspot.com/manga?manga={key}'''
 
 class UpdateAll(Update):
   def get(self):
-    Schedule.schedule_update()
+    threading.Thread(target=Schedule.schedule_update).start()
     query = Manga.query()
     for manga in query:
       try:

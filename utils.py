@@ -1,6 +1,8 @@
 # This file contains helpful "tools" that other files can import and use
+import logging
 import webapp2
 
+from google.appengine.api.taskqueue import TaskAlreadyExistsError, TombstonedTaskError
 from google.appengine.ext import ndb
 
 from mail import send_mail
@@ -29,5 +31,11 @@ class Handler(webapp2.RequestHandler):
     self.response.write(json_txt)
 
   def handle_exception(self, exception, debug_mode):
-    send_mail('Exception in manga notifier', repr(exception))
-    webapp2.RequestHandler.handle_exception(self, exception, debug_mode)
+    if type(exception) in [TombstonedTaskError, TaskAlreadyExistsError]:
+      subject = 'Duplicate task created at manga-notifier'
+      message = repr(exception)
+      send_mail(subject, message)
+      logging.exception('Duplicate task created')
+    else:
+      send_mail('Exception in manga notifier', repr(exception))
+      webapp2.RequestHandler.handle_exception(self, exception, debug_mode)

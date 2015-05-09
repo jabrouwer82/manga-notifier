@@ -3,7 +3,7 @@ import webapp2
 
 from datetime import date, datetime, time, timedelta
 from google.appengine.api import taskqueue
-from google.appengine.api.taskqueue import TaskRetryOptions, TombstonedTaskError
+from google.appengine.api.taskqueue import TaskRetryOptions
 from utils import Handler
 from mail import send_mail
 
@@ -36,13 +36,7 @@ class Schedule(Handler):
       # In restricts updatequeue to enforce one push per day
       args['name'] = str(schedule_date)
       args['queue_name'] = 'updatequeue'
-    try:
-      taskqueue.add(**args)
-    except TombstonedTaskError:
-      subject = 'Duplicate task created at manga-notifier'
-      message = 'A task was created for {date} but there already exists a task for {date}.'.format(date=schedule_date)
-      send_mail(subject, message)
-      logging.exception('Duplicate task created')
+    taskqueue.add(**args)
 
   def get(self):
     # Endpoit handler for adding to the task queue
