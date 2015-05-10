@@ -30,6 +30,25 @@ application = webapp2.WSGIApplication([
                              name='manga-update',
                              strict_slash=True)
     ]),
+    # Source endpoints
+    routes.RedirectRoute('/source',
+                         handler='source.Source',
+                         name='source-add',
+                         strict_slash=True),
+    routes.PathPrefixRoute('/source', [
+        routes.RedirectRoute('/list',
+                             handler='source.SourceList',
+                             name='source-list',
+                             strict_slash=True),
+        routes.RedirectRoute('/<ident>',
+                             handler='source.Source',
+                             name='source-edit',
+                             strict_slash=True),
+        routes.RedirectRoute('/delete/<ident>',
+                             handler='source.SourceDelete',
+                             name='source-delete',
+                             strict_slash=True),
+    ]),
     # Schedule endpoints
     routes.RedirectRoute('/schedule',
                          handler='schedule.Schedule',

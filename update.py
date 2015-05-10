@@ -31,22 +31,22 @@ class Update(Handler):
         # Try next volume next chapter
         volume = original_volume + 1
         chapter = original_chapter + 1
-        content = Content(manga.url_scheme, volume, chapter)
+        content.update(volume, chapter)
       if volume >= 0 and content.is_not_found():
         # Try next volume first chapter
         volume = original_volume + 1
         chapter = 1
-        content = Content(manga.url_scheme, volume, chapter)
+        content.update(volume, chapter)
       if content.is_not_found():
         # Try current volume next next chapter
         volume = original_volume
         chapter = original_chapter + 2
-        content = Content(manga.url_scheme, volume, chapter)
+        content.update(volume, chapter)
       if volume >= 0 and content.is_not_found():
         # Try next volume next next chapter
         volume = original_volume + 1
         chapter = original_chapter + 2
-        content = Content(manga.url_scheme, volume, chapter)
+        content.update(volume, chapter)
       
       if content.is_not_found():
         # Something's goofed, try again tomorrow. 

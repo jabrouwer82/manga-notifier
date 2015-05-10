@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+{% if manga.name %}
 <title>{{ manga.name }}</title>
+{% else %}
+<title>Add New manga</title>
+{% endif %}
 <div class="container">
   <div class="page-header">
     {% if manga.key %}
