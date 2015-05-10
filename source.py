@@ -1,9 +1,11 @@
 import logging
 import webapp2
 
-from utils import Handler
 from google.appengine.ext import ndb
+
+from mail import send_mail
 from models import ContentSource
+from utils import Handler
 
 class Source(Handler):
 
@@ -34,7 +36,7 @@ class SourceDelete(Handler):
   def get(self, ident):
     source = ContentSource.fetch_by_key(ident)
     subject = 'Deleted {source.name} from datastore'.format(source=source)
-    html_message = self.render_template('delete_email.html', write=False, source=source)
+    html_message = self.render_template('delete_email.html', write=False, item=source)
     send_mail(subject, html=html_message)
     self.response.write(html_message)
     source.key.delete()

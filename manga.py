@@ -44,7 +44,7 @@ class MangaDelete(Handler):
   def get(self, ident):
     manga = MangaModel.fetch_by_key(ident)
     subject = 'Deleted {manga} from datastore'.format(manga=manga.name)
-    html_message = self.render_template('delete_email.html', write=False, manga=manga)
+    html_message = self.render_template('delete_email.html', write=False, item=manga)
     send_mail(subject, html=html_message)
     self.response.write(html_message)
     manga.key.delete()
