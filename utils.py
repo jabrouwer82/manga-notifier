@@ -21,6 +21,9 @@ class Handler(webapp2.RequestHandler):
 
   def render_template(self, template_name, write=True, **contents):
     template = jinja_env.get_template(template_name)
+    # Next we strip the .html off
+    template_name = template_name.split('.')[0]
+    contents['template'] = template_name
     if write:
       self.response.out.write(template.render(contents))
     else:

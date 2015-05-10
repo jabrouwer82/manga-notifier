@@ -1,0 +1,9 @@
+@media (min-width: 701px) {
+  .desktop-search {
+    float: right;
+  }
+  .desktop-navbottom {
+    position: absolute;
+    bottom: 0;
+  }
+}
