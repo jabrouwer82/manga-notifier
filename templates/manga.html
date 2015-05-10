@@ -42,7 +42,11 @@
       <div class="form-group">
         <label for="input-frequency" class="col-sm-2 control-label">Frequency</label>
         <div class="col-sm-10">
+          {% if manga.key %}
           <input class="form-control" type="number" id="input-frequency" step="any" name="frequency" value="{{ manga.frequency }}" />
+          {% else %}
+          <input class="form-control" type="number" id="input-frequency" step="any" name="frequency" value="{{ seed }}" />
+          {% endif %}
         </div> <!-- col-sm-10 -->
       </div> <!-- form-group -->
       <div class="form-group">

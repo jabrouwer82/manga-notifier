@@ -1,22 +1,26 @@
 import logging
 import webapp2
 
-from mail import send_mail
-from utils import Handler
 from google.appengine.ext import ndb
+from random import random
+
+from mail import send_mail
 from models import Manga as MangaModel
+from utils import Handler
 
 class Manga(Handler):
 
   def get(self, ident=None):
     if ident:
       manga = MangaModel.fetch_by_name_or_key(ident)
-    
+      seed = None
+
     # If we were not given a manga or could not find the one we were given.
     if not ident or not manga:
       manga = MangaModel()
+      seed = random()
     
-    self.render_template('manga.html', manga=manga)
+    self.render_template('manga.html', manga=manga, seed=seed)
 
   def post(self, ident=None):
     if ident:
