@@ -14,7 +14,7 @@
     {% endif %}
   </div> <!-- page-header -->
   <div class="col-md-8 fluid-container">
-    <form method="post" class="form-horizontal">
+    <form id="manga-form" method="post" class="form-horizontal">
       <div class="form-group">
         <label for="input-name" class="col-sm-2 control-label">Name</label>
         <div class="col-sm-10">
@@ -109,16 +109,9 @@
   {% endif %}
 </div> <!-- container -->
 <style>
-  form {
+  #manga-form {
     margin-bottom: 15px;
   }
 </style>
-<script type="text/javascript">
-  $('#delete-manga').click(function() {
-    if(!confirm("Remove this manga from the datastore?")) {
-      event.preventDefault();
-    }
-  });
-</script>
 
 {% endblock %}

@@ -55,7 +55,7 @@
             Actions
           </h4>
         </li>
-        <a id="delete-source" href="{{ 'source-delete' | uri(ident=source.key.urlsafe()) }}" class="list-group-item">
+        <a id="source-delete-source" href="{{ 'source-delete' | uri(ident=source.key.urlsafe()) }}" class="list-group-item">
           <span class="badge">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
           </span>
@@ -71,12 +71,5 @@
     margin-bottom: 15px;
   }
 </style>
-<script type="text/javascript">
-  $('#delete-source').click(function() {
-    if(!confirm("Remove this source from the datastore?")) {
-      event.preventDefault();
-    }
-  });
-</script>
 
 {% endblock %}
