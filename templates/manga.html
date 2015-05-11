@@ -92,12 +92,14 @@
         </span>
         Update This Manga
       </a>
+      {% if (manga.prev_chapter and manga.prev_chapter >= 0) or (manga.prev_volume and manga.prev_volume >= 0) %}
       <a href="{{ 'update-undo' | uri(ident=manga.key.urlsafe()) }}" class="list-group-item">
         <span class="badge">
           <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
         </span>
         Undo Most Recent Update
       </a>
+      {% endif %}
       <a id="delete-manga" href="{{ 'manga-delete' | uri(ident=manga.key.urlsafe()) }}" class="list-group-item">
         <span class="badge">
           <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>

@@ -1,10 +1,14 @@
 <html>
 <body>
-  <p>Time to read {% if manga.volume >= 0 %}volume {{ manga.volume }}{% endif %}chapter {{manga.chapter }} of {{ item.name }}!</p>
-  <p>You can read it here: {{ url }}</p>
+  <p>Time to read {% if manga.volume >= 0 %}volume {{ manga.volume }}{% endif %}chapter {{manga.chapter }} of {{ manga.name }}!</p>
+  <p>You can read it <a href="{{ url }}">here</a></p>
+  <p>You can undo this update <a href="{{ 'manga-revert' | uri(ident=manga.key.urlsafe(), chapter=manga.prev_chapter, volume=manga.prev_volume, _full=True) }}">here</a></p>
   {% if manga.countdown >= 0 %}
   <p>You will receive the next update in {{ manga.countdown }} days</p>
-  <p>For more information on this manga, see: {{ manga.manga_updates_url }}</p>
-  <p>If there is an issue with this manga, you can update it here: {{ 'manga' | uri(ident=manga.key.urlsafe(), _full=True) }}</p>
+  {% else %}
+  <p>There was an error updating this manga.</p>
+  {% endif %}
+  <p><a href="{{ manga.manga_updates_url }}">View this manga on manga updates</a></p>
+  <p>If therey is an issue with this manga, you can update it <a href="{{ 'manga' | uri(ident=manga.key.urlsafe(), _full=True) }}">here</a></p>
 </body>
 </html>

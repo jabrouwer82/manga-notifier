@@ -53,6 +53,8 @@ class Update(Handler):
         manga.countdown = float('-inf')
         logging.error('Unable to update volume/chapter for {name}'.format(name=name))
       else:
+        manga.prev_volume = original_volume
+        manga.prev_chapter = original_chapter
         manga.volume = volume
         manga.chapter = chapter
         logging.info('Updating {name} from volume:{original_volume}, ' \
@@ -118,11 +120,26 @@ class Cancel(Handler):
     q.purge()
     self.redirect(webapp2.uri_for('home'))
 
+class Revert(Handler):
+  def get(self, ident):
+    manga = Manga.fetch_by_name_or_key(ident)
+    chapter = int(self.request.get('chapter', -1))
+    volume = int(self.request.get('volume', -1))
+    if chapter > -1:
+      manga.chapter = chapter
+    if prev_volume > -1:
+      manga.volume = volume
+    manga.put()
+    self.redirect(webapp2.uri_for('home'))
+
 class Undo(Handler):
   def get(self, ident):
     manga = Manga.fetch_by_name_or_key(ident)
-    if manga and manga.chapter > 1:
-      manga.chapter -= 1
-      manga.put()
+    if manga.prev_chapter >= 0:
+      manga.chapter = manga.prev_chapter
+      manga.prev_chapter = -1
+    if manga.prev_volume >= 0:
+      manga.volume = manga.prev_volume
+      manga.prev_volume = -1
+    manga.put()
     self.redirect(webapp2.uri_for('home'))
-

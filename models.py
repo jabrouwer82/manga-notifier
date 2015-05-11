@@ -34,6 +34,8 @@ class Manga(BaseModel):
   url_scheme = ndb.StringProperty(default='')
   volume = ndb.IntegerProperty(default=-1)
   chapter = ndb.IntegerProperty(default=0)
+  prev_volume = ndb.IntegerProperty(default=-1)
+  prev_chapter = ndb.IntegerProperty(default=-1)
   frequency = ndb.FloatProperty(default=1.0)
   freq_units = ndb.StringProperty(default='')
   countdown = ndb.FloatProperty(default=0.0)

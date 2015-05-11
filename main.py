@@ -28,6 +28,10 @@ application = webapp2.WSGIApplication([
         routes.RedirectRoute('/update/<ident>',
                              handler='update.UpdateOne',
                              name='manga-update',
+                             strict_slash=True),
+        routes.RedirectRoute('/revert/<ident>',
+                             handler='update.Revert',
+                             name='manga-revert',
                              strict_slash=True)
     ]),
     # Source endpoints
@@ -81,6 +85,10 @@ application = webapp2.WSGIApplication([
         routes.RedirectRoute('/undo/<ident>',
                              handler='update.Undo',
                              name='update-undo',
+                             strict_slash=True),
+        routes.RedirectRoute('/revert/<ident>',
+                             handler='update.Revert',
+                             name='update-revert',
                              strict_slash=True)
     ]),
     routes.RedirectRoute('/convert',
