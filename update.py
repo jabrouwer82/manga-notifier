@@ -81,19 +81,11 @@ class Update(Handler):
       manga.put()
       
       # Send the email
-      message='''
-Time for the next chapter of {name}! 
-
-You can access it here: {url}.
-
-You will receive the next update for {name} in {countdown} days.
-
-For more information on this manga, see: {manga_updates_url}.
-
-If there is an isue with this manga status, you can update it here:
-http://ballin-octo-wallhack.appspot.com/manga?manga={key}'''
-      message = message.format(name=name, url=url, key=manga.key.urlsafe(), countdown=manga.countdown, manga_updates_url=manga.manga_updates_url)
-      subject = 'Time for {name}'.format(name=name)
+      message = self.render_template('update_email.html', manga=manga, write=False)
+      if manga.volume >= 0:
+        subject = 'Time for {manga.name} v{manga.volume}c{manga.chapter}'.format(manga=manga)
+      else:
+        subject = 'Time for {manga.name} c{manga.chapter}'.format(manga=manga)
       send_mail(subject, message)
     else:
       manga.countdown -= 1

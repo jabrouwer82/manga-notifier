@@ -1,0 +1,10 @@
+<html>
+<body>
+  <p>Time to read {% if manga.volume >= 0 %}volume {{ manga.volume }}{% endif %}chapter {{manga.chapter }} of {{ item.name }}!</p>
+  <p>You can read it here: {{ url }}</p>
+  {% if manga.countdown >= 0 %}
+  <p>You will receive the next update in {{ manga.countdown }} days</p>
+  <p>For more information on this manga, see: {{ manga.manga_updates_url }}</p>
+  <p>If there is an issue with this manga, you can update it here: {{ 'manga' | uri(ident=manga.key.urlsafe(), _full=True) }}</p>
+</body>
+</html>
