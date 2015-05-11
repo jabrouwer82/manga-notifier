@@ -20,7 +20,13 @@
         <th>Countdown</th>
       </tr>
       {% for manga in mangas|sort(attribute='countdown') %}
-      <tr{% if manga.countdown < 1.0 %} class="info" {% endif %}>
+      {% if manga.countdown < 0.0 %}
+      <tr class="warning">
+      {% elif manga.countdown < 1.0 %} 
+      <tr class="info">
+      {% else %}
+      <tr>
+      {% endif %}
         <td>
           <a href="{{ 'manga-edit' | uri(ident=manga.key.urlsafe()) }}" > {{ manga.name }}</a>
         <span class="badge">
