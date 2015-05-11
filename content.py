@@ -33,7 +33,7 @@ class Content(object):
   def page_count(self):
     if self.source:
       for num in xrange(1, 100):
-        if not self.source.page_count.format(num=num) in self.page:
+        if not self.source.page.format(num=num) in self.page:
           return num - 1
     return 100
 
