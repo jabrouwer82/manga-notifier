@@ -1,5 +1,5 @@
 application: ballin-octo-wallhack
-version: 2-5-10
+version: 2-5-11
 runtime: python27
 api_version: 1
 threadsafe: true

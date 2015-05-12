@@ -88,7 +88,7 @@ class Update(Handler):
         subject = 'Time for {manga.name} v{manga.volume}c{manga.chapter}'.format(manga=manga)
       else:
         subject = 'Time for {manga.name} c{manga.chapter}'.format(manga=manga)
-      send_mail(subject, message)
+      send_mail(subject, html=message)
     else:
       manga.countdown -= 1
       manga.put()
