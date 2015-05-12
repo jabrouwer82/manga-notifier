@@ -130,7 +130,7 @@ class Revert(Handler):
     volume = int(self.request.get('volume', -1))
     if chapter > -1:
       manga.chapter = chapter
-    if prev_volume > -1:
+    if volume > -1:
       manga.volume = volume
     manga.put()
     self.redirect(webapp2.uri_for('home'))
