@@ -18,6 +18,7 @@
       <tr>
         <th>Name</th>
         <th>Countdown</th>
+        <th>Rate</th>
       </tr>
       {% for manga in mangas|sort(attribute='countdown') %}
       {% if manga.countdown < 0.0 %}
@@ -33,7 +34,11 @@
           {% if manga.volume >= 0 %}v{{ manga.volume }}{% endif %} c{{ manga.chapter }}
         </span>
         </td>
-        <td>{{ manga.countdown }} days
+        <td>
+          {{ manga.countdown }} days
+        </td>
+        <td>
+          {{ manga.frequency }} {{ manga.freq_units }}
         </td>
       </tr>
       {% endfor %}
