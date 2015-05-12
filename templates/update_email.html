@@ -9,6 +9,6 @@
   <p>There was an error updating this manga.</p>
   {% endif %}
   <p><a href="{{ manga.manga_updates_url }}">View this manga on manga updates</a></p>
-  <p>If therey is an issue with this manga, you can update it <a href="{{ 'manga' | uri(ident=manga.key.urlsafe(), _full=True) }}">here</a></p>
+  <p>If therey is an issue with this manga, you can update it <a href="{{ 'manga-edit' | uri(ident=manga.key.urlsafe(), _full=True) }}">here</a></p>
 </body>
 </html>
