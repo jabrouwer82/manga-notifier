@@ -1,6 +1,6 @@
 <html>
 <body>
-  <p>Time to read {% if manga.volume >= 0 %}volume {{ manga.volume }}{% endif %}chapter {{manga.chapter }} of {{ manga.name }}!</p>
+  <p>Time to read {% if manga.volume >= 0 %}volume {{ manga.volume }} {% endif %}chapter {{manga.chapter }} of {{ manga.name }}!</p>
   <p>You can read it <a href="{{ url }}">here</a></p>
   <p>You can undo this update <a href="{{ 'manga-revert' | uri(ident=manga.key.urlsafe(), chapter=manga.prev_chapter, volume=manga.prev_volume, _full=True) }}">here</a></p>
   {% if manga.countdown >= 0 %}

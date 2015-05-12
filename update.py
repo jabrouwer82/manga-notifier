@@ -83,7 +83,10 @@ class Update(Handler):
       manga.put()
       
       # Send the email
-      message = self.render_template('update_email.html', manga=manga, write=False)
+      message = self.render_template('update_email.html',
+                                     manga=manga,
+                                     url=url,
+                                     write=False)
       if manga.volume >= 0:
         subject = 'Time for {manga.name} v{manga.volume}c{manga.chapter}'.format(manga=manga)
       else:
